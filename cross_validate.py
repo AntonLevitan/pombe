@@ -3,7 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot
 import numpy
 import scipy
-import sklearn.linear_model
+import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 
@@ -14,7 +14,7 @@ def cross_validate(training_ontotype, training_data):
     y = training_data.values.ravel()
 
     cv = sklearn.model_selection.StratifiedKFold(n_splits=6)
-    classifier = sklearn.linear_model.LogisticRegression()
+    classifier = sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
     probas_ = sklearn.model_selection.cross_val_predict(classifier, X, y, method="predict_proba", cv=cv, n_jobs=6)[:,1]
 
     tprs = []

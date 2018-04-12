@@ -1,5 +1,5 @@
 import pandas
-import sklearn.linear_model
+import sklearn.ensemble
 
 from constants import TRAINING_SCORE_COLUMN, TRAINING_PVALUE_COLUMN
 
@@ -15,7 +15,7 @@ def score_training_data(training_data):
     training_data.drop([TRAINING_SCORE_COLUMN, TRAINING_PVALUE_COLUMN], axis=1, inplace=True)
 
 def train_prediction_model(training_ontotype, training_data):
-    return sklearn.linear_model.LogisticRegression().fit(training_ontotype, training_data.values.ravel())
+    return sklearn.ensemble.RandomForestClassifier(n_jobs=-1).fit(training_ontotype, training_data.values.ravel())
 
 def generate_phenotype(ontotype, model):
     phenotype = model.predict_proba(ontotype)[:,1]
