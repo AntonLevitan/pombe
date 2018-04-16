@@ -9,9 +9,9 @@ import sklearn.model_selection
 
 import settings
 
-def cross_validate(training_ontotype, training_data):
+def cross_validate(training_ontotype, training_scores):
     X = training_ontotype.values
-    y = training_data.values.ravel()
+    y = training_scores.values.ravel()
 
     cv = sklearn.model_selection.StratifiedKFold(n_splits=6)
     classifier = sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
