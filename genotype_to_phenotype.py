@@ -21,7 +21,7 @@ SPECIES_FLAG = 's'
 ONTOTYPE_FLAG = 'o'
 
 def read_arguments():
-    opts, args = getopt.getopt(sys.argv[1:], SPECIES_FLAG + ':' + ONTOTYPE_FLAG + ':', [DOWNLOAD_FLAG, MIN_FLAG + '=', MAX_FLAG + '=', CV_FLAG + '='])
+    opts, args = getopt.getopt(sys.argv[1:], SPECIES_FLAG + ':' + ONTOTYPE_FLAG + ':', [DOWNLOAD_FLAG, MIN_FLAG + '=', MAX_FLAG + '=', CV_FLAG])
 
     for opt, arg in opts:
         if opt == "--" + DOWNLOAD_FLAG:
@@ -33,7 +33,7 @@ def read_arguments():
         elif opt == '-' + SPECIES_FLAG:
             settings.species = arg
         elif opt =="--" + CV_FLAG:
-            settings.crossval_filename = arg
+            settings.crossval = True
         elif opt == '-' + ONTOTYPE_FLAG:
             settings.ontotype_filename = arg
 
@@ -66,8 +66,8 @@ def genotype_to_phenotype():
             training_ontotypes[species] = generate_ontotype(training_scores[species], gene_ontotypes[species])
             prediction_models[species] = train_prediction_model(training_ontotypes[species], training_scores[species])
 
-    if settings.crossval_filename is not None:
-        cross_validate(training_ontotypes[settings.species], training_scores[settings.species])
+            if settings.crossval:
+                cross_validate(species, training_ontotypes[species], training_scores[species])
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
     ontotype = generate_ontotype(genotype, gene_ontotypes[settings.species], training_ontotypes[settings.species].columns)

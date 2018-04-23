@@ -7,9 +7,9 @@ import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 
-import settings
+CV_FILE_SUFFIX = ".png"
 
-def cross_validate(training_ontotype, training_scores):
+def cross_validate(species, training_ontotype, training_scores):
     X = training_ontotype.values
     y = training_scores.values.ravel()
 
@@ -50,5 +50,5 @@ def cross_validate(training_ontotype, training_scores):
     matplotlib.pyplot.ylabel("True Positive Rate")
     matplotlib.pyplot.title("Receiver operating characteristic")
     matplotlib.pyplot.legend(loc="lower right")
-    matplotlib.pyplot.savefig(settings.crossval_filename)
+    matplotlib.pyplot.savefig(species + CV_FILE_SUFFIX)
     matplotlib.pyplot.show()
