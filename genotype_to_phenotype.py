@@ -52,7 +52,6 @@ def genotype_to_phenotype():
     ontology, associations, alias_maps, training_data = read_data(species_info)
 
     gene_ontotypes = {}
-    training_scores = {}
     training_ontotypes = {}
     prediction_models = {}
 
@@ -62,12 +61,12 @@ def genotype_to_phenotype():
         gene_ontotypes[species] = generate_gene_ontotypes(filtered_association, alias_maps[species])
 
         if training_data[species] is not None:
-            training_scores[species] = score_training_data(training_data[species])
-            training_ontotypes[species] = generate_ontotype(training_scores[species], gene_ontotypes[species])
-            prediction_models[species] = train_prediction_model(training_ontotypes[species], training_scores[species])
+            training_scores = score_training_data(training_data[species])
+            training_ontotypes[species] = generate_ontotype(training_scores, gene_ontotypes[species])
+            prediction_models[species] = train_prediction_model(training_ontotypes[species], training_scores)
 
             if settings.crossval:
-                cross_validate(species, training_ontotypes[species], training_scores[species])
+                cross_validate(species, training_ontotypes[species], training_scores)
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
     ontotype = generate_ontotype(genotype, gene_ontotypes[settings.species], training_ontotypes[settings.species].columns)
