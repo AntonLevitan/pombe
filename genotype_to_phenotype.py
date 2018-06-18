@@ -1,9 +1,6 @@
-import getopt
+import argparse
 import json
 import pandas
-import sys
-
-import settings
 
 from download_data import download_data
 from read_data import read_data
@@ -13,42 +10,35 @@ from cross_validate import cross_validate
 
 SPECIES_INFO_FILENAME = "species.json"
 
-DOWNLOAD_FLAG = "dl"
-CV_FLAG = "cv"
-MIN_FLAG = "min"
-MAX_FLAG = "max"
-SPECIES_FLAG = 's'
-ONTOTYPE_FLAG = 'o'
+DOWNLOAD_FLAG = "--dl"
+CV_FLAG = "--cv"
+MIN_FLAG = "--min"
+MAX_FLAG = "--max"
+SPECIES_FLAG = "-s"
+ONTOTYPE_FLAG = "-o"
 
 def read_arguments():
-    opts, args = getopt.getopt(sys.argv[1:], SPECIES_FLAG + ':' + ONTOTYPE_FLAG + ':', [DOWNLOAD_FLAG, MIN_FLAG + '=', MAX_FLAG + '=', CV_FLAG])
+    parser = argparse.ArgumentParser()
 
-    for opt, arg in opts:
-        if opt == "--" + DOWNLOAD_FLAG:
-            settings.download = True
-        elif opt == "--" + MIN_FLAG:
-            settings.min_genes = int(arg)
-        elif opt == "--" + MAX_FLAG:
-            settings.max_genes = int(arg)
-        elif opt == '-' + SPECIES_FLAG:
-            settings.species = arg
-        elif opt =="--" + CV_FLAG:
-            settings.crossval = True
-        elif opt == '-' + ONTOTYPE_FLAG:
-            settings.ontotype_filename = arg
+    parser.add_argument(DOWNLOAD_FLAG, dest="download", action="store_true")
+    parser.add_argument(CV_FLAG, dest="crossval", action="store_true")
+    parser.add_argument(MIN_FLAG, dest="min_genes")
+    parser.add_argument(MAX_FLAG, dest="max_genes")
+    parser.add_argument(SPECIES_FLAG, dest="species", default="S_cerevisiae")
+    parser.add_argument(ONTOTYPE_FLAG, dest="ontotype_filename", nargs='?', const="ontotype.txt")
 
-    if len(args) > 0:
-        settings.genotype_filename = args[0]
-    if len(args) > 1:
-        settings.phenotype_filename = args[1]
+    parser.add_argument("genotype_filename", default="genotype.txt", nargs='?')
+    parser.add_argument("phenotype_filename", default="phenotype.txt", nargs='?')
+
+    return parser.parse_args()
 
 def genotype_to_phenotype():
-    read_arguments()
+    settings = read_arguments()
 
     with open(SPECIES_INFO_FILENAME) as species_info_file:
         species_info = json.load(species_info_file)
 
-    download_data(species_info)
+    download_data(species_info, settings.download)
     ontology, associations, alias_maps, training_data = read_data(species_info)
 
     gene_ontotypes = {}
@@ -57,7 +47,7 @@ def genotype_to_phenotype():
 
     for species in species_info:
         ontology.update_association(associations[species])
-        filtered_association = filter_association(ontology, associations[species])
+        filtered_association = filter_association(ontology, associations[species], settings.min_genes, settings.max_genes)
         gene_ontotypes[species] = generate_gene_ontotypes(filtered_association, alias_maps[species])
 
         if training_data[species] is not None:

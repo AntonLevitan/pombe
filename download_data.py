@@ -4,7 +4,6 @@ import StringIO
 import urllib
 import urllib2
 
-import settings
 from constants import DATA_DIRECTORY, GENEONTOLOGY_BASE_FILENAME, GENE2GO_BASE_FILENAME, GENEINFO_FILE_SUFFIX, COSTANZO_BASE_FILENAME
 
 GENEINFO_URL_PREFIX = "ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/"
@@ -14,33 +13,33 @@ COSTANZO_URL_PREFIX = "http://boonelab.ccbr.utoronto.ca/supplement/costanzo2009/
 
 GZIP_FILE_SUFFIX = ".gz"
 
-def download_go():
+def download_go(always_dl):
     go_url = GENEONTOLOGY_URL_PREFIX + GENEONTOLOGY_BASE_FILENAME
     go_filename = DATA_DIRECTORY + GENEONTOLOGY_BASE_FILENAME
 
-    if settings.download or not os.path.exists(go_filename):
+    if always_dl or not os.path.exists(go_filename):
         urllib.urlretrieve(go_url, go_filename)
 
-def download_gene2go():
+def download_gene2go(always_dl):
     gene2go_url = GENE2GO_URL_PREFIX + GENE2GO_BASE_FILENAME + GZIP_FILE_SUFFIX
     gene2go_filename = DATA_DIRECTORY + GENE2GO_BASE_FILENAME
 
-    if settings.download or not os.path.exists(gene2go_filename):
+    if always_dl or not os.path.exists(gene2go_filename):
         download_gzipped_url(gene2go_url, gene2go_filename)
 
-def download_geneinfo(species):
+def download_geneinfo(species, always_dl):
     geneinfo_base_filename = species["geneinfo_name"] + GENEINFO_FILE_SUFFIX
     geneinfo_url = GENEINFO_URL_PREFIX + species["geneinfo_dir"] + '/' + geneinfo_base_filename + GZIP_FILE_SUFFIX
     geneinfo_filename = DATA_DIRECTORY + geneinfo_base_filename
 
-    if settings.download or not os.path.exists(geneinfo_filename):
+    if always_dl or not os.path.exists(geneinfo_filename):
         download_gzipped_url(geneinfo_url, geneinfo_filename)
 
-def download_costanzo():
+def download_costanzo(always_dl):
     costanzo_url = COSTANZO_URL_PREFIX + COSTANZO_BASE_FILENAME + GZIP_FILE_SUFFIX
     costanzo_filename = DATA_DIRECTORY + COSTANZO_BASE_FILENAME
 
-    if settings.download or not os.path.exists(costanzo_filename):
+    if always_dl or not os.path.exists(costanzo_filename):
         download_gzipped_url(costanzo_url, costanzo_filename)
 
 def download_gzipped_url(url, filename):
@@ -55,14 +54,14 @@ def download_gzipped_url(url, filename):
     zipped.close()
     download.close()
 
-def download_data(species_info):
+def download_data(species_info, always_dl):
     if not os.path.exists(DATA_DIRECTORY):
         os.makedirs(DATA_DIRECTORY)
 
-    download_go()
-    download_gene2go()
+    download_go(always_dl)
+    download_gene2go(always_dl)
 
     for species in species_info.values():
-        download_geneinfo(species)
+        download_geneinfo(species, always_dl)
 
-    download_costanzo()
+    download_costanzo(always_dl)

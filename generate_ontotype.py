@@ -4,10 +4,8 @@ import numpy
 import pandas
 import sklearn.feature_extraction
 
-import settings
-
-def filter_association(ontology, association):
-    association = goatools.associations.get_assc_pruned(association, settings.min_genes, settings.max_genes)[0]
+def filter_association(ontology, association, min_genes, max_genes):
+    association = goatools.associations.get_assc_pruned(association, min_genes, max_genes)[0]
 
     reverse_association = goatools.associations.get_b2aset(association)
     removed_ids = set()
