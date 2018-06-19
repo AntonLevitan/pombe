@@ -20,7 +20,7 @@ ONTOTYPE_FLAG = "-o"
 def read_arguments():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(DOWNLOAD_FLAG, dest="download", action="store_true")
+    parser.add_argument(DOWNLOAD_FLAG, dest="force_dl", action="store_true")
     parser.add_argument(CV_FLAG, dest="crossval", action="store_true")
     parser.add_argument(MIN_FLAG, dest="min_genes")
     parser.add_argument(MAX_FLAG, dest="max_genes")
@@ -38,7 +38,7 @@ def genotype_to_phenotype():
     with open(SPECIES_INFO_FILENAME) as species_info_file:
         species_info = json.load(species_info_file)
 
-    download_data(species_info, settings.download)
+    download_data(species_info, settings.force_dl)
     ontology, associations, alias_maps, training_data = read_data(species_info)
 
     gene_ontotypes = {}
