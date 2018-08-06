@@ -3,7 +3,7 @@ import goatools.associations
 import goatools.obo_parser
 import pandas
 
-from constants import DATA_DIRECTORY, GENEINFO_FILE_SUFFIX, GENEONTOLOGY_BASE_FILENAME, GENE2GO_BASE_FILENAME, COSTANZO_BASE_FILENAME, TRAINING_SCORE_COLUMN, TRAINING_PVALUE_COLUMN
+from constants import DATA_DIRECTORY, GENEINFO_FILE_SUFFIX, GENEONTOLOGY_FILENAME, GENE2GO_FILENAME, COSTANZO_FILENAME, TRAINING_SCORE_COLUMN, TRAINING_PVALUE_COLUMN
 
 GENEINFO_GENEID_COLUMN = "GeneID"
 GENEINFO_COLUMNS = [GENEINFO_GENEID_COLUMN, "Symbol", "LocusTag", "Synonyms"]
@@ -12,7 +12,7 @@ TRAINING_INDEX_COLUMNS = ["Query", "Array"]
 TRAINING_COLUMNS = TRAINING_INDEX_COLUMNS + [TRAINING_SCORE_COLUMN, TRAINING_PVALUE_COLUMN]
 
 def read_go():
-    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_BASE_FILENAME, optional_attrs=["relationship"], load_obsolete=True)
+    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"], load_obsolete=True)
 
     for term in ontology.values():
         term.parents.update(getattr(term, "relationship", { "part_of": set() }).get("part_of", set()))
@@ -23,7 +23,7 @@ def read_gene2go(species_info):
     tax_ids = [species["taxonomy_id"] for species in species_info.values()]
     associations = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(set)))
 
-    goatools.associations.read_ncbi_gene2go(DATA_DIRECTORY + GENE2GO_BASE_FILENAME, tax_ids, taxid2asscs=associations)
+    goatools.associations.read_ncbi_gene2go(DATA_DIRECTORY + GENE2GO_FILENAME, tax_ids, taxid2asscs=associations)
 
     return {species_id: associations[species["taxonomy_id"]]["GeneID2GOs"] for (species_id, species) in species_info.items()}
 
@@ -45,7 +45,7 @@ def read_geneinfo(species):
     return alias_map
 
 def read_costanzo():
-    costanzo_filename = DATA_DIRECTORY + COSTANZO_BASE_FILENAME
+    costanzo_filename = DATA_DIRECTORY + COSTANZO_FILENAME
     costanzo_data = pandas.read_table(costanzo_filename, header=None, usecols=[0,2,4,6], names=TRAINING_COLUMNS, index_col=TRAINING_INDEX_COLUMNS)
 
     return costanzo_data.rename(index=lambda gene: gene.split("_")[0], level=0).sort_index()
