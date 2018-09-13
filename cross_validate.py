@@ -3,18 +3,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot
 import numpy
 import scipy
-import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 
 CV_FILE_SUFFIX = ".png"
 
-def cross_validate(species, training_ontotype, training_scores):
+def cross_validate(training_ontotype, training_scores, classifier, crossval_filename):
     X = training_ontotype.values
     y = training_scores.values.ravel()
 
     cv = sklearn.model_selection.StratifiedKFold(n_splits=6)
-    classifier = sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
     probas_ = sklearn.model_selection.cross_val_predict(classifier, X, y, method="predict_proba", cv=cv, n_jobs=6)[:,1]
 
     tprs = []
@@ -50,5 +48,5 @@ def cross_validate(species, training_ontotype, training_scores):
     matplotlib.pyplot.ylabel("True Positive Rate")
     matplotlib.pyplot.title("Receiver operating characteristic")
     matplotlib.pyplot.legend(loc="lower right")
-    matplotlib.pyplot.savefig(species + CV_FILE_SUFFIX)
+    matplotlib.pyplot.savefig(crossval_filename)
     matplotlib.pyplot.show()
