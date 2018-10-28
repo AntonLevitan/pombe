@@ -70,5 +70,6 @@ def genotype_to_phenotype():
     phenotype.to_csv(settings.phenotype_filename, sep='\t', header=False)
 
 
+
 if __name__ == "__main__":
     genotype_to_phenotype()
