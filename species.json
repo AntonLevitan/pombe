@@ -1,0 +1,12 @@
+{
+    "H_sapiens": {
+        "geneinfo_name": "Homo_sapiens",
+        "geneinfo_dir": "Mammalia",
+        "taxonomy_id": 9606
+    },
+    "S_cerevisiae": {
+        "geneinfo_name": "Saccharomyces_cerevisiae",
+        "geneinfo_dir": "Fungi",
+        "taxonomy_id": 559292
+    }
+}
