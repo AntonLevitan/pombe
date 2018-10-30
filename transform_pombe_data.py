@@ -3,11 +3,11 @@ import os
 
 DATA_DIRECTORY = "Data" + os.sep
 
-data = pd.read_csv("Dataset S2 - Averaged E-MAP one allele per gene.csv", header=None)
-# data = pd.read_csv("Dataset S3 - S.pombe Similarity Scores.csv", header=None)
+# data = pd.read_csv("Dataset S2 - Averaged E-MAP one allele per gene.csv", header=None)
+data = pd.read_csv("Dataset S3 - S.pombe Similarity Scores.csv", header=None)
 
-output_file_name = "gene_interactions"
-# output_file_name = "gene_similarity"
+# output_file_name = "gene_interactions"
+output_file_name = "gene_similarity"
 
 output_file_suffix = ".csv"
 
