@@ -22,7 +22,7 @@ def score_training_data(training_data):
 
 
 def train_prediction_model(training_ontotype, training_scores):
-    return sklearn.ensemble.RandomForestClassifier(n_jobs=-1).fit(training_ontotype, training_scores.values.ravel())
+    return sklearn.ensemble.RandomForestClassifier(n_jobs=-1, random_state=0).fit(training_ontotype, training_scores.values.ravel())
 
 
 def generate_phenotype(ontotype, model):

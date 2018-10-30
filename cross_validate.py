@@ -13,8 +13,8 @@ def cross_validate(species, training_ontotype, training_scores):
     X = training_ontotype.values
     y = training_scores.values.ravel()
 
-    cv = sklearn.model_selection.StratifiedKFold(n_splits=6)
-    classifier = sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
+    cv = sklearn.model_selection.StratifiedKFold(n_splits=6, random_state=0)
+    classifier = sklearn.ensemble.RandomForestClassifier(n_jobs=-1, random_state=0)
     probas_ = sklearn.model_selection.cross_val_predict(classifier, X, y, method="predict_proba", cv=cv, n_jobs=6)[:,1]
 
     tprs = []
