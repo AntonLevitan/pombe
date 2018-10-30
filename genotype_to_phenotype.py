@@ -37,28 +37,24 @@ def read_arguments():
 def genotype_to_phenotype():
     settings = read_arguments()
 
-    with open(SPECIES_INFO_FILENAME) as species_info_file:
-        species_info = json.load(species_info_file)
-
-    download_data(species_info, settings.force_dl)
-    ontology, associations, alias_maps, training_data = read_data(species_info)
+    download_data(settings.force_dl)
+    ontology, associations, training_data = read_data()
 
     gene_ontotypes = {}
     training_ontotypes = {}
     prediction_models = {}
 
-    for species in species_info:
-        ontology.update_association(associations[species])
-        filtered_association = filter_association(ontology, associations[species], settings.min_genes, settings.max_genes)
-        gene_ontotypes[species] = generate_gene_ontotypes(filtered_association, alias_maps[species])
+    ontology.update_association(associations)
+    filtered_association = filter_association(ontology, associations, settings.min_genes, settings.max_genes)
+    gene_ontotypes = generate_gene_ontotypes(filtered_association)
 
-        if training_data[species] is not None:
-            training_scores = score_training_data(training_data[species])
-            training_ontotypes[species] = generate_ontotype(training_scores, gene_ontotypes[species])
-            prediction_models[species] = train_prediction_model(training_ontotypes[species], training_scores)
+    if training_data is not None:
+        training_scores = score_training_data(training_data)
+        training_ontotypes = generate_ontotype(training_scores, gene_ontotypes)
+        prediction_models = train_prediction_model(training_ontotypes, training_scores)
 
-            if settings.crossval:
-                cross_validate(species, training_ontotypes[species], training_scores)
+        if settings.crossval:
+            cross_validate(training_ontotypes, training_scores)
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
     ontotype = generate_ontotype(genotype, gene_ontotypes[settings.species], training_ontotypes[settings.species].columns)
@@ -68,7 +64,6 @@ def genotype_to_phenotype():
 
     phenotype = generate_phenotype(ontotype, prediction_models[settings.species])
     phenotype.to_csv(settings.phenotype_filename, sep='\t', header=False)
-
 
 
 if __name__ == "__main__":

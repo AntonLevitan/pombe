@@ -4,7 +4,9 @@ import numpy
 import pandas
 import sklearn.feature_extraction
 
+
 def filter_association(ontology, association, min_genes, max_genes):
+
     association = goatools.associations.get_assc_pruned(association, min_genes, max_genes)[0]
 
     reverse_association = goatools.associations.get_b2aset(association)
@@ -20,12 +22,15 @@ def filter_association(ontology, association, min_genes, max_genes):
 
     return goatools.associations.get_b2aset(reverse_association)
 
-def generate_gene_ontotypes(association, alias_map):
+
+def generate_gene_ontotypes(association):
+    
     geneid_ontotypes = collections.defaultdict(collections.Counter, { geneid: collections.Counter(go_ids) for (geneid, go_ids) in association.items() })
 
-    return { alias: geneid_ontotypes[geneid] for (alias, geneid) in alias_map.items() }
+    return geneid_ontotypes
 
 def generate_ontotype(genotype, gene_ontotypes, training_ids=None):
+    
     ontotype_data = [sum([gene_ontotypes.get(gene, collections.Counter()) for gene in genes], collections.Counter()) for genes in genotype.index]
 
     vectorizer = sklearn.feature_extraction.DictVectorizer(dtype=numpy.uint8, sparse=False)

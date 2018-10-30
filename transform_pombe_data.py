@@ -3,11 +3,11 @@ import os
 
 DATA_DIRECTORY = "Data" + os.sep
 
-# data = pd.read_csv("Dataset S2 - Averaged E-MAP one allele per gene.csv", header=None)
-data = pd.read_csv("Dataset S3 - S.pombe Similarity Scores.csv", header=None)
+data = pd.read_csv("Dataset S2 - Averaged E-MAP one allele per gene.csv", header=None)
+# data = pd.read_csv("Dataset S3 - S.pombe Similarity Scores.csv", header=None)
 
-# output_file_name = "gene_interactions"
-output_file_name = "gene_similarity"
+output_file_name = "gene_interactions"
+# output_file_name = "gene_similarity"
 
 output_file_suffix = ".csv"
 
@@ -32,8 +32,8 @@ def mxn_to_list(data, output_name):
 
         combined = pd.concat(frames, axis=1)
         combined.columns = ["Gene A", "Gene B", output_file_name]
-
-        combined.to_csv(DATA_DIRECTORY + output_name + output_file_suffix)
+        combined = combined.dropna()
+        combined.to_csv(DATA_DIRECTORY + output_name + output_file_suffix, index=False)
 
 
 if __name__ == "__main__":
