@@ -22,7 +22,8 @@ import zipfile
 
 from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_SUFFIX, POMBE_FILENAME
 
-GENE_ASS_URL_PREFIX = "http://geneontology.org/gene-associations/" 
+GENE_ASS_URL_PREFIX = "http://geneontology.org/gene-associations/"
+GENEONTOLOGY_URL_PREFIX = "http://geneontology.org/ontology/" 
 
 GZIP_FILE_SUFFIX = ".gz"
 
@@ -86,4 +87,5 @@ def download_data(force_dl):
     if not os.path.exists(DATA_DIRECTORY):
         os.makedirs(DATA_DIRECTORY)
 
+    download_file(GENEONTOLOGY_URL_PREFIX + GENEONTOLOGY_FILENAME, GENEONTOLOGY_FILENAME, "raw", force_dl)
     download_file(GENE_ASS_URL_PREFIX + POMBE_SUFFIX + GZIP_FILE_SUFFIX, POMBE_FILENAME, "gzip", force_dl)

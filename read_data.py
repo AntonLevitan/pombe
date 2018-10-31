@@ -5,6 +5,8 @@ import collections
 
 from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME
 
+INDEX_COLUMNS = ['Gene A', 'Gene B']
+
 def read_go():
 
     ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"], load_obsolete=True)
@@ -21,12 +23,14 @@ def read_gene_ass():
     
     return gene_ass
 
+
 def read_interactions():
     
     interactions_filename = DATA_DIRECTORY + "gene_interactions.csv"
-    interactions_data = pd.read_csv(interactions_filename)
+    interactions_data = pd.read_csv(interactions_filename, index_col=INDEX_COLUMNS)
 
     return interactions_data
+
 
 def read_data():
 

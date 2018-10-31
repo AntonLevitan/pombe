@@ -25,7 +25,6 @@ def score_training_data(training_data):
     training_data[PHENOTYPE_COLUMN] = np.where(training_data[TRAINING_SCORE_COLUMN] > 0, 1,0)
     training_scores = training_data.drop([TRAINING_SCORE_COLUMN], axis=1)
 
-    print(training_scores.head(20))
     return training_scores
 
 
