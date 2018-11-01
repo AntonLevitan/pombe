@@ -28,6 +28,7 @@ def read_interactions():
     
     interactions_filename = DATA_DIRECTORY + "gene_interactions.csv"
     interactions_data = pd.read_csv(interactions_filename, index_col=INDEX_COLUMNS)
+    interactions_data.to_csv('GI_indexed.csv')
 
     return interactions_data
 
