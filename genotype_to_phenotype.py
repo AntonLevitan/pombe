@@ -57,12 +57,12 @@ def genotype_to_phenotype():
             cross_validate(training_ontotypes, training_scores)
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
-    ontotype = generate_ontotype(genotype, gene_ontotypes[settings.species], training_ontotypes[settings.species].columns)
+    ontotype = generate_ontotype(genotype, gene_ontotypes, training_ontotypes.columns)
 
     if settings.ontotype_filename is not None:
         ontotype.to_csv(settings.ontotype_filename, sep='\t')
 
-    phenotype = generate_phenotype(ontotype, prediction_models[settings.species])
+    phenotype = generate_phenotype(ontotype, prediction_models)
     phenotype.to_csv(settings.phenotype_filename, sep='\t', header=False)
 
 
