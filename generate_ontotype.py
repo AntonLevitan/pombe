@@ -29,6 +29,7 @@ def generate_gene_ontotypes(association):
 
     return geneid_ontotypes
 
+
 def generate_ontotype(genotype, gene_ontotypes, training_ids=None):
     
     ontotype_data = [sum([gene_ontotypes.get(gene, collections.Counter()) for gene in genes], collections.Counter()) for genes in genotype.index]
