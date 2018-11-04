@@ -20,13 +20,13 @@ except:
 
 import zipfile
 
-from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_SUFFIX, POMBE_FILENAME
+from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_SUFFIX, POMBE_FILENAME, POMBE_DB_URL, POMBE_RAW
 
 GENE_ASS_URL_PREFIX = "http://geneontology.org/gene-associations/"
 GENEONTOLOGY_URL_PREFIX = "http://geneontology.org/ontology/" 
 
 GZIP_FILE_SUFFIX = ".gz"
-
+ZIP_FILE_SUFFIX = ".zip"
 
 def download_gzip(url, filename):
     try:
@@ -89,3 +89,4 @@ def download_data(force_dl):
 
     download_file(GENEONTOLOGY_URL_PREFIX + GENEONTOLOGY_FILENAME, GENEONTOLOGY_FILENAME, "raw", force_dl)
     download_file(GENE_ASS_URL_PREFIX + POMBE_SUFFIX + GZIP_FILE_SUFFIX, POMBE_FILENAME, "gzip", force_dl)
+    # download_file(POMBE_RAW + ZIP_FILE_SUFFIX, POMBE_DB_URL, "zip", force_dl)
