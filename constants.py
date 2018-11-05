@@ -8,6 +8,8 @@ POMBE_SUFFIX = "gene_association.pombase"
 POMBE_FILENAME = "gene_ass_pombe.gaf"
 
 TRAINING_SCORE_COLUMN = "gene_interactions"
+SIMILARITY_SCORE_COLUMN = "gene_similarity"
+COMBINED_FILENAME = "combined.csv"
 
 POMBE_DB_URL = 'http://interactome-cmp.ucsf.edu/pombe2012/modules/datasets/Dataset%20S2%20-%20Averaged%20E-MAP%20one%20allele%20per%20gene.txt.zip'
 
