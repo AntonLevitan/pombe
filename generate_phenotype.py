@@ -13,9 +13,7 @@ SIMILARITY_THRESHOLD = 0.003
 def score_training_data(training_data):
 
     negatives = training_data[(training_data[TRAINING_SCORE_COLUMN] <= -SCORE_THRESHOLD) & (training_data[SIMILARITY_SCORE_COLUMN] >= SIMILARITY_THRESHOLD)]
-    # negatives = training_data[training_data[TRAINING_SCORE_COLUMN] <= -SCORE_THRESHOLD]
     positives = training_data[(training_data[TRAINING_SCORE_COLUMN] >= SCORE_THRESHOLD) & (training_data[SIMILARITY_SCORE_COLUMN] >= SIMILARITY_THRESHOLD)]
-    # positives = training_data[training_data[TRAINING_SCORE_COLUMN] >= SCORE_THRESHOLD]
     no_interaction = training_data.drop(negatives.index | positives.index).sample(n=len(negatives))
     training_scores = pandas.concat([negatives, no_interaction]).sort_index().drop([TRAINING_SCORE_COLUMN, SIMILARITY_SCORE_COLUMN], axis=1)
     training_scores[PHENOTYPE_COLUMN] = 0

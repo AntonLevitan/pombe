@@ -6,8 +6,7 @@ from download_data import download_data
 from read_data import read_data
 from generate_ontotype import filter_association, generate_gene_ontotypes, generate_ontotype
 from generate_phenotype import score_training_data, train_prediction_model, generate_phenotype
-from cross_validate import cross_validate
-from cross_validate_regression import regression
+from cross_validate import cross_validate, regression
 
 SPECIES_INFO_FILENAME = "species.json"
 
