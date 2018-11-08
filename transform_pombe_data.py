@@ -15,6 +15,7 @@ output_file_suffix = ".csv"
 column_a = "Gene A"
 column_b = "Gene B"
 
+
 def mxn_to_list(data, output_name):
 
         score = data.iloc[:, 1:].values.flatten()
@@ -52,4 +53,3 @@ GI_transformed = mxn_to_list(GI, output_name_GI)
 GS_transformed = mxn_to_list(GS, output_name_GS)
 
 combined = combine_features(GI_transformed, GS_transformed, 'combined')
-
