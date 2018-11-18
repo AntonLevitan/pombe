@@ -3,7 +3,7 @@ import goatools.obo_parser
 import pandas as pd
 import collections
 
-from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME, COMBINED_FILENAME
+from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME, COMBINED_FILENAME, GENE_INTERACTIONS
 
 INDEX_COLUMNS = ['Gene A', 'Gene B']
 
@@ -26,7 +26,7 @@ def read_gene_ass():
 
 def read_interactions():
     
-    interactions_filename = DATA_DIRECTORY + COMBINED_FILENAME
+    interactions_filename = DATA_DIRECTORY + GENE_INTERACTIONS
     interactions_data = pd.read_csv(interactions_filename, index_col=INDEX_COLUMNS)
     interactions_data.to_csv('GI_indexed.csv')
 
