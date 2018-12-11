@@ -6,7 +6,8 @@ from download_data import download_data
 from read_data import read_data
 from generate_ontotype import filter_association, generate_gene_ontotypes, generate_ontotype
 from generate_phenotype import score_training_data, train_prediction_model, generate_phenotype
-from cross_validate import cross_validate, regression
+from cross_validate import cross_validate, regression_cv
+from constants import TRAINING_SCORE_COLUMN
 
 SPECIES_INFO_FILENAME = "species.json"
 
@@ -45,6 +46,7 @@ def genotype_to_phenotype():
     gene_ontotypes = {}
     training_ontotypes = {}
     prediction_models = {}
+    regression_ontotypes = {}
 
     ontology.update_association(associations)
     filtered_association = filter_association(ontology, associations, settings.min_genes, settings.max_genes)
@@ -59,7 +61,10 @@ def genotype_to_phenotype():
             cross_validate(training_ontotypes, training_scores)
 
         if settings.crossvalreg:
-            regression(training_ontotypes, training_scores)
+            regression_file = open('new_regression.txt', "w+")
+            regression_ontotypes = generate_ontotype(training_data[TRAINING_SCORE_COLUMN], gene_ontotypes)
+            regression_cv(regression_ontotypes, training_data[TRAINING_SCORE_COLUMN], regression_file, k_fold=6)
+            regression_file.close()
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
     ontotype = generate_ontotype(genotype, gene_ontotypes, training_ontotypes.columns)
