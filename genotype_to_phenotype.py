@@ -61,9 +61,10 @@ def genotype_to_phenotype():
             cross_validate(training_ontotypes, training_scores)
 
         if settings.crossvalreg:
-            regression_file = open('new_regression.txt', "w+")
+            regression_file = open('new_random_regression.txt', "w+")
             regression_ontotypes = generate_ontotype(training_data[TRAINING_SCORE_COLUMN], gene_ontotypes)
-            regression_cv(regression_ontotypes, training_data[TRAINING_SCORE_COLUMN], regression_file, k_fold=6)
+            random_scores = training_data[TRAINING_SCORE_COLUMN].sample(frac=1, random_state=0)
+            regression_cv(regression_ontotypes, random_scores, regression_file, k_fold=6)
             regression_file.close()
 
     genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])

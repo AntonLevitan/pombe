@@ -1,0 +1,7 @@
+Test 0, Pearsons correlation: 0.164946513497, p-Value: 0.0
+Test 1, Pearsons correlation: 0.149400269182, p-Value: 0.0
+Test 2, Pearsons correlation: 0.166458596507, p-Value: 0.0
+Test 3, Pearsons correlation: 0.158762714899, p-Value: 0.0
+Test 4, Pearsons correlation: 0.15325843372, p-Value: 0.0
+Test 5, Pearsons correlation: 0.14946174039, p-Value: 0.0
+Pearsons mean correlation: 0.157048044699, p-Value: 0.0
