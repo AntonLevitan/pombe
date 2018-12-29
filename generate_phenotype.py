@@ -1,8 +1,6 @@
 import pandas
 import sklearn.ensemble
-import numpy as np
-
-from constants import TRAINING_SCORE_COLUMN, SIMILARITY_SCORE_COLUMN
+from constants import TRAINING_SCORE_COLUMN
 
 PHENOTYPE_COLUMN = "Phenotype"
 

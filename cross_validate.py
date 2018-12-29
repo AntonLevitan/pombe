@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot
 import numpy
 import scipy
@@ -8,7 +7,9 @@ import sklearn.metrics
 import sklearn.model_selection
 from scipy.stats import spearmanr, pearsonr
 from mpmath import mpf, mpc, mp
+matplotlib.use("Agg")
 mp.dps = 40
+
 CV_FILE_SUFFIX = ".png"
 
 

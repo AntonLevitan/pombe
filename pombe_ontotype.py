@@ -5,10 +5,11 @@ import collections
 
 from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME
 
+
 def read_go():
 
-    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"], load_obsolete=True)
-
+    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"],
+                                         load_obsolete=True)
     for term in ontology.values():
         term.parents.update(getattr(term, "relationship", { "part_of": set() }).get("part_of", set()))
 
@@ -21,12 +22,14 @@ def read_gene_ass():
     
     return gene_ass
 
+
 def read_interactions():
     
     interactions_filename = DATA_DIRECTORY + "gene_interactions.csv"
     interactions_data = pd.read_table(interactions_filename)
 
     return interactions_data
+
 
 def read_data():
 
@@ -35,6 +38,3 @@ def read_data():
     training_data = read_interactions()
 
     return ontology, associations, training_data
-
-x = read_data()
-print(x[2].head())

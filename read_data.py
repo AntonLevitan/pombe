@@ -1,18 +1,18 @@
 import goatools.associations
 import goatools.obo_parser
 import pandas as pd
-import collections
 
-from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME, COMBINED_FILENAME, GENE_INTERACTIONS
+from constants import DATA_DIRECTORY, GENEONTOLOGY_FILENAME, POMBE_FILENAME, GENE_INTERACTIONS
 
 INDEX_COLUMNS = ['Gene A', 'Gene B']
 
+
 def read_go():
 
-    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"], load_obsolete=True)
-
+    ontology = goatools.obo_parser.GODag(DATA_DIRECTORY + GENEONTOLOGY_FILENAME, optional_attrs=["relationship"],
+                                         load_obsolete=True)
     for term in ontology.values():
-        term.parents.update(getattr(term, "relationship", { "part_of": set() }).get("part_of", set()))
+        term.parents.update(getattr(term, "relationship", {"part_of": set()}).get("part_of", set()))
 
     return ontology
 

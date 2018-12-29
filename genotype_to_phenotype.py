@@ -29,10 +29,10 @@ def read_arguments():
     parser.add_argument(MIN_FLAG, dest="min_genes")
     parser.add_argument(MAX_FLAG, dest="max_genes")
     parser.add_argument(SPECIES_FLAG, dest="species", default="S_cerevisiae")
-    parser.add_argument(ONTOTYPE_FLAG, dest="ontotype_filename", nargs='?', const="ontotype.txt")
+    parser.add_argument(ONTOTYPE_FLAG, dest="ontotype_filename", nargs='?', const="all_pombe.txt")
 
-    parser.add_argument("genotype_filename", default="genotype.txt", nargs='?')
-    parser.add_argument("phenotype_filename", default="phenotype.txt", nargs='?')
+    parser.add_argument("genotype_filename", default="genotype3.txt", nargs='?')
+    parser.add_argument("phenotype_filename", default="phenotype3.txt", nargs='?')
 
     return parser.parse_args()
 
@@ -67,7 +67,8 @@ def genotype_to_phenotype():
             regression_cv(regression_ontotypes, random_scores, regression_file, k_fold=6)
             regression_file.close()
 
-    genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True, dtype=str).set_index([0,1]).rename_axis([None, None])
+    genotype = pandas.read_table(settings.genotype_filename, header=None, delim_whitespace=True,
+                                 dtype=str).set_index([0, 1]).rename_axis([None, None])
     ontotype = generate_ontotype(genotype, gene_ontotypes, training_ontotypes.columns)
 
     if settings.ontotype_filename is not None:
