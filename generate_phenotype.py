@@ -19,8 +19,6 @@ def score_training_data(training_data):
     training_scores[PHENOTYPE_COLUMN] = 0
     training_scores.loc[negatives.index, PHENOTYPE_COLUMN] = 1
 
-    print(len(training_scores))
-
     return training_scores
 
 
