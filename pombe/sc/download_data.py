@@ -14,6 +14,7 @@ COSTANZO_URL_PREFIX = "http://boonelab.ccbr.utoronto.ca/supplement/costanzo2009/
 
 GZIP_FILE_SUFFIX = ".gz"
 
+
 def download_gzip(url, filename):
     download = urllib2.urlopen(url)
     zipped = StringIO.StringIO(download.read())
@@ -26,6 +27,7 @@ def download_gzip(url, filename):
     zipped.close()
     download.close()
 
+
 def download_zip(url, filename):
     download = urllib2.urlopen(url)
     zipped = StringIO.StringIO(download.read())
@@ -36,8 +38,10 @@ def download_zip(url, filename):
     zipped.close()
     download.close()
 
+
 def download_raw(url, filename):
     urllib.urlretrieve(url, DATA_DIRECTORY + filename)
+
 
 def download_file(url, filename, compression, force_dl):
     if force_dl or not os.path.exists(DATA_DIRECTORY + filename):
@@ -48,11 +52,13 @@ def download_file(url, filename, compression, force_dl):
         elif compression == "raw":
             download_raw(url, filename)
 
+
 def download_geneinfo(species, force_dl):
     geneinfo_filename = species["geneinfo_name"] + GENEINFO_FILE_SUFFIX
     geneinfo_url = GENEINFO_URL_PREFIX + species["geneinfo_dir"] + '/' + geneinfo_filename + GZIP_FILE_SUFFIX
 
     download_file(geneinfo_url, geneinfo_filename, "gzip", force_dl)
+
 
 def download_data(species_info, force_dl):
     if not os.path.exists(DATA_DIRECTORY):
